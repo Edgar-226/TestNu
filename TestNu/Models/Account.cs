@@ -2,18 +2,11 @@ using System;
 
 namespace TestNu.Models;
 
-public class Account
+public class Account(bool active, int availableLimit)
 {
-    public bool Active { get; set; }
-    public int AvailableLimit { get; set; }
-    public List<Transaction1> History { get; set; }
-
-    public Account(bool active, int availableLimit)
-    {
-        Active = active;
-        this.AvailableLimit = availableLimit;
-        History = new List<Transaction1>();
-    }
+    public bool Active { get; set; } = active;
+    public int AvailableLimit { get; set; } = availableLimit;
+    public List<Transaction1> History { get; set; } = [];
 
     public void AddTransaction(Transaction1 transaction)
     {

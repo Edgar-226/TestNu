@@ -3,11 +3,10 @@ using TestNu.Models;
 
 Console.WriteLine("Hello, World!");
 
-
 var transactions = new List<Transaction1>
 {
     new("Starbucks", 5, DateTime.Now),
-    new("McDonald's", 10, DateTime.Now)
+    new("McDonald's", 10, DateTime.Now),
 };
 
 foreach (var transaction in transactions)
