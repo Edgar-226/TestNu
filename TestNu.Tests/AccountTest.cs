@@ -27,4 +27,75 @@ public class AccountTest
             account.ToString()
         );
     }
+
+    [Fact]
+    public void ValidateTransactionTest()
+    {
+        var account = new Account(true, 1000);
+        var transaction = new Transaction1("Café", 15, DateTime.Now);
+
+        var result = account.ValidateTransaction(transaction);
+
+        Assert.Empty(result.Violations);
+        Assert.Contains(transaction, result.Account.History);
+
+    }
+
+    [Fact]
+    public void ValidateTransactionViolation()
+    {
+        var account = new Account(false, 1000);
+        var transaction = new Transaction1("Café", 15, DateTime.Now);
+
+        var result = account.ValidateTransaction(transaction);
+
+        Assert.Empty(account.History);
+        Assert.Contains("account-not-active", result.Violations);
+
+    }
+
+
+    [Fact]
+    public void ValidateTransactionAmountAboveLimit90Percent()
+    {
+        var account = new Account(true, 100);
+        var transaction = new Transaction1("Café", 91, DateTime.Now);
+
+        var result = account.ValidateTransaction(transaction);
+
+        Assert.Empty(account.History);
+        Assert.Contains("first-transaction-above-threshold", result.Violations);
+
+
+    }
+
+
+    [Fact]
+    public void ValidateTransactionInsufficentLimit()
+    {
+        var account = new Account(true, 100);
+        var transaction = new Transaction1("Café", 101, DateTime.Now);
+
+        var result = account.ValidateTransaction(transaction);
+
+        Assert.Empty(account.History);
+        Assert.Contains("insufficient-limit", result.Violations);
+
+
+    }
+
+    [Fact]
+    public void ValidateViolations()
+    {
+        var account = new Account(false, 100);
+        var transaction = new Transaction1("Café", 104, DateTime.Now);
+
+        var result = account.ValidateTransaction(transaction);
+
+        Assert.Empty(account.History);
+        Assert.Contains("account-not-active", result.Violations);
+        Assert.Contains("first-transaction-above-threshold", result.Violations);
+        Assert.Contains("insufficient-limit", result.Violations);
+
+    }
 }
